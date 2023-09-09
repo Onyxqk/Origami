@@ -1,0 +1,7 @@
+<div
+  class="resizable-canvas"
+  (mousedown)="startResize($event)"
+  (mousemove)="resize($event)"
+  (mouseup)="stopResize()">
+  <canvas #canvasElement class="canvas"></canvas>
+</div>
