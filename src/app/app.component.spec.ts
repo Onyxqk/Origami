@@ -1,9 +1,10 @@
 import { TestBed } from '@angular/core/testing'
+import { CanvasComponent } from './canvas/canvas.component'
 import { AppComponent } from './app.component'
 
 describe('AppComponent', () => {
   beforeEach(() => TestBed.configureTestingModule({
-    declarations: [AppComponent]
+    declarations: [AppComponent, CanvasComponent]
   }))
 
   it('should create the app', () => {
