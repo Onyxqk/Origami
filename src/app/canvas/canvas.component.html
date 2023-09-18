@@ -3,5 +3,9 @@
   (mousedown)="startResize($event)"
   (mousemove)="resize($event)"
   (mouseup)="stopResize()">
-  <canvas #canvasElement class="canvas"></canvas>
+  <canvas #canvasElement class="canvas" 
+    (mousedown)="startDrawing($event)"
+    (mousemove)="draw($event)"
+    (mouseup)="stopDrawing()">
+  </canvas>
 </div>
