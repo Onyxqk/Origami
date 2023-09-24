@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core'
 
 @Component({
   selector: 'app-canvas',
@@ -6,19 +6,19 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
   styleUrls: ['./canvas.component.css']
 })
 export class CanvasComponent {
-  @ViewChild('canvasElement', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
-  private ctx: CanvasRenderingContext2D;
-  private isDrawing = false;
-  private isResizing = false;
-  private initialWidth: number;
-  private initialHeight: number;
-  private initialX: number;
-  private initialY: number;
+  @ViewChild('canvasElement', { static: true }) canvas!: ElementRef<HTMLCanvasElement>
+  ctx: CanvasRenderingContext2D
+  isDrawing = false
+  isResizing = false
+  initialWidth: number
+  initialHeight: number
+  initialX: number
+  initialY: number
 
   constructor() { }
 
   ngAfterViewInit() {
-    this.ctx = this.canvas.nativeElement.getContext('2d');
+    this.ctx = this.canvas.nativeElement.getContext('2d')
   }
 
   startDrawing(event: MouseEvent) {
@@ -40,7 +40,7 @@ export class CanvasComponent {
   }
 
   startResize(event: MouseEvent) {
-    this.isResizing = true;
+    this.isResizing = true
     this.initialWidth = this.canvas.nativeElement.offsetWidth
     this.initialHeight = this.canvas.nativeElement.offsetHeight
     this.initialX = event.clientX
