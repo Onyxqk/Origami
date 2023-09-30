@@ -1,0 +1,60 @@
+.palette {
+    background-color: black;
+    width: max-content;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-top: 4px;
+    border-radius: 10px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    text-align: center;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.red {
+    accent-color: red;
+}
+
+.green {
+    accent-color: green;
+}
+
+.blue {
+    accent-color: blue;
+}
+
+.yellow {
+    accent-color: yellow;
+}
+
+.orange {
+    accent-color: orange;
+}
+
+.purple {
+    accent-color: purple;
+}
+
+.pink {
+    accent-color: pink;
+}
+
+.brown {
+    accent-color: brown;
+}
+
+.gray {
+    accent-color: gray;
+}
+
+.white {
+    accent-color: white;
+}
+
+input[type='radio'] { 
+    transform: scale(2); 
+    margin: 2rem;
+}

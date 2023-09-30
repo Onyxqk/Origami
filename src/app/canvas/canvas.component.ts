@@ -1,10 +1,13 @@
 import { Component, ElementRef, ViewChild } from '@angular/core'
+import { ColorService } from '../services/color.service'
+import { Subscription } from 'rxjs'
 
 @Component({
   selector: 'app-canvas',
   templateUrl: './canvas.component.html',
   styleUrls: ['./canvas.component.css']
 })
+
 export class CanvasComponent {
   @ViewChild('canvasElement', { static: true }) canvas!: ElementRef<HTMLCanvasElement>
   ctx: CanvasRenderingContext2D
@@ -14,8 +17,14 @@ export class CanvasComponent {
   initialHeight: number
   initialX: number
   initialY: number
+  colorSubscription: Subscription
 
-  constructor() { }
+  constructor(private colorService: ColorService) {
+    this.colorSubscription = this.colorService.getColor().subscribe((color) => {
+      this.ctx.strokeStyle = color;
+      this.ctx.fillStyle = color;
+    })
+  }
 
   ngAfterViewInit() {
     this.ctx = this.canvas.nativeElement.getContext('2d')
