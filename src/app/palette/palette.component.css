@@ -55,6 +55,6 @@
 }
 
 input[type='radio'] { 
-    transform: scale(2); 
-    margin: 2rem;
+    transform: scale(1.75); 
+    margin: 1.5rem;
 }
