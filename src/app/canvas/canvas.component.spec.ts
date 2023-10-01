@@ -25,8 +25,8 @@ describe('CanvasComponent', () => {
     component['startResize'](event)
 
     expect(component['isResizing']).toBe(true)
-    expect(component['initialWidth']).toBe(300)
-    expect(component['initialHeight']).toBe(150)
+    expect(component['initialWidth']).toBe(400)
+    expect(component['initialHeight']).toBe(320)
     expect(component['initialX']).toBe(event.clientX)
     expect(component['initialY']).toBe(event.clientY)
   })
