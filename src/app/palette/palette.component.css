@@ -50,6 +50,10 @@
     accent-color: gray;
 }
 
+.black {
+    accent-color: black;
+}
+
 .white {
     accent-color: white;
 }
