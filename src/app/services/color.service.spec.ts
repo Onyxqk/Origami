@@ -13,4 +13,12 @@ describe('ColorService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should set and get color', () => {
+    const color = 'red';
+    service.setColor(color);
+    service.getColor().subscribe((result) => {
+      expect(result).toBe(color);
+    });
+  });
 });
