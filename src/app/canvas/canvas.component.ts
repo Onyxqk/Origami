@@ -69,4 +69,13 @@ export class CanvasComponent {
   stopResize() {
     this.isResizing = false
   }
+
+  exportToPNG() {
+    const canvas = this.canvas.nativeElement;
+    const dataURL = canvas.toDataURL('image/png')
+    const link = document.createElement('a')
+    link.href = dataURL
+    link.download = 'canvas-export.png'
+    link.click()
+  }
 }
