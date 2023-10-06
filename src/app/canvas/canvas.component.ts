@@ -71,11 +71,20 @@ export class CanvasComponent {
   }
 
   exportToPNG() {
-    const canvas = this.canvas.nativeElement;
+    const canvas = this.canvas.nativeElement
     const dataURL = canvas.toDataURL('image/png')
     const link = document.createElement('a')
     link.href = dataURL
     link.download = 'canvas-export.png'
+    link.click()
+  }
+
+  exportToJPEG() {
+    const canvas = this.canvas.nativeElement
+    const dataURL = canvas.toDataURL('image/jpeg')
+    const link = document.createElement('a')
+    link.href = dataURL
+    link.download = 'canvas-export.jpg'
     link.click()
   }
 }
