@@ -1,5 +1,10 @@
-<button (click)="exportToPNG()">Export to PNG</button>
-<button (click)="exportToJPEG()">Export to JPEG</button>
+<div class="menu">
+  <button class="origami-button" (click)="showMenu()"><img src="../../assets/origami transparent.png" width="32" height="32" (click)="showMenu()" alt="Origami Menu Button"></button>
+  <div id="origamiMenu" class="menu-content">
+    <a (click)="exportToPNG()">Export to PNG</a>
+    <a (click)="exportToJPEG()">Export to JPEG</a>
+  </div>
+</div>
 
 <div
   class="resizable-canvas"

@@ -8,3 +8,12 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'Origami'
 }
+
+window.onclick = function (event) {
+  if (!event.target.matches('.origami-button')) {
+    const menu = document.getElementById("origamiMenu")
+    if (menu.classList.contains('show')) {
+      menu.classList.remove('show')
+    }
+  }
+}

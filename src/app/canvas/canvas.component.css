@@ -5,8 +5,54 @@
 }
 
 .canvas {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    background-color: #ffff;
-    width: 25rem;
-    height: 20rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background-color: #ffff;
+  width: 25rem;
+  height: 20rem;
+}
+
+.origami-button {
+  background-color: black;
+  border-radius: 10px;
+  border: none;
+  padding: 1rem;
+  margin-left: .5rem;
+  margin-right: 1rem;
+  margin-top: -5.8rem;
+  color: white;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  float: left;
+  height: 3.875rem;
+}
+
+.origami-button:hover, .origami-button:focus {
+  background-color: rgba(57, 57, 57);
+}
+
+.menu-content {
+  display: none;
+  position: absolute;
+  background-color: black;
+  margin-top: -5.8rem;
+  min-width: 10rem;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 10px;
+}
+
+.menu-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  font-family: Helvetica, sans-serif;
+  display: block;
+}
+
+.menu a:hover {
+  background-color: rgba(57, 57, 57);
+}
+
+.show {
+  display: block;
 }

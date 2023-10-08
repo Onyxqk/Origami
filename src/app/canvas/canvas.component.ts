@@ -87,4 +87,8 @@ export class CanvasComponent {
     link.download = 'canvas-export.jpg'
     link.click()
   }
+
+  showMenu() {
+    document.getElementById("origamiMenu").classList.toggle("show")
+  }
 }
