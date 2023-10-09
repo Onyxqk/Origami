@@ -136,4 +136,31 @@ describe('CanvasComponent', () => {
 
     expect(component.isResizing).toBe(false)
   })
+
+  it('should export to PNG', () => {
+    spyOn(component.canvas.nativeElement, 'toDataURL').and.returnValue('data:image/png;base64')
+    const link: any = { click: () => { } }
+    spyOn(document, 'createElement').and.returnValue(link)
+
+    component.exportToPNG()
+
+    expect(component.canvas.nativeElement.toDataURL).toHaveBeenCalledWith('image/png')
+    expect(document.createElement).toHaveBeenCalledWith('a')
+    expect(link.href).toBe('data:image/png;base64')
+    expect(link.download).toBe('canvas-export.png')
+  });
+
+  it('should export to JPEG', () => {
+    spyOn(component.canvas.nativeElement, 'toDataURL').and.returnValue('data:image/jpeg;base64')
+    const link: any = { click: () => { } }
+    spyOn(document, 'createElement').and.returnValue(link)
+
+    component.exportToJPEG()
+
+    expect(component.canvas.nativeElement.toDataURL).toHaveBeenCalledWith('image/jpeg')
+    expect(document.createElement).toHaveBeenCalledWith('a')
+    expect(link.href).toBe('data:image/jpeg;base64')
+    expect(link.download).toBe('canvas-export.jpg')
+  });
+
 })
