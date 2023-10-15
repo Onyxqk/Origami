@@ -165,9 +165,22 @@ describe('CanvasComponent', () => {
 
   it('should import an image', () => {
     component.showMenu()
+    const fileReader = new FileReader()
+    spyOn(window, 'FileReader').and.returnValue(fileReader)
+    spyOn(fileReader, 'readAsDataURL')
+    spyOn(fileReader, 'addEventListener').and.callFake((event, callback) => {
+      if (event === 'load') {
+        callback(new Event('load'))
+      }
+    })
+
+    const input = document.createElement('input')
+    spyOn(document, 'createElement').and.returnValue(input)
+    const changeEvent = document.createEvent('Event')
+    changeEvent.initEvent('change', true, true)
+    component.canvas.nativeElement = document.createElement('canvas')
     component.importImage()
-
-    expect(component.importImage()).toBe()
-  });
-
+    input.dispatchEvent(changeEvent)
+  })
+  
 })
