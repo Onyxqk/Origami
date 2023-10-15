@@ -21,8 +21,8 @@ export class CanvasComponent {
 
   constructor(private colorService: ColorService) {
     this.colorSubscription = this.colorService.getColor().subscribe((color) => {
-      this.ctx.strokeStyle = color;
-      this.ctx.fillStyle = color;
+      this.ctx.strokeStyle = color
+      this.ctx.fillStyle = color
     })
   }
 
@@ -90,5 +90,30 @@ export class CanvasComponent {
 
   showMenu() {
     document.getElementById("origamiMenu").classList.toggle("show")
+  }
+
+  importImage() {
+    const input = document.createElement('input')
+    input.type = 'file'
+
+    input.addEventListener('change', (event) => {
+      const file = (event.target as HTMLInputElement).files[0]
+      if (file) {
+        const reader = new FileReader()
+        reader.onload = () => {
+          const img = new Image()
+          img.src = reader.result as string
+
+          img.onload = () => {
+            this.canvas.nativeElement.width = img.width
+            this.canvas.nativeElement.height = img.height
+            this.ctx.drawImage(img, 0, 0, img.width, img.height)
+          };
+        };
+        reader.readAsDataURL(file)
+      }
+    });
+
+    input.click()
   }
 }
