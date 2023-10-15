@@ -163,4 +163,11 @@ describe('CanvasComponent', () => {
     expect(link.download).toBe('canvas-export.jpg')
   });
 
+  it('should import an image', () => {
+    component.showMenu()
+    component.importImage()
+
+    expect(component.importImage()).toBe()
+  });
+
 })
