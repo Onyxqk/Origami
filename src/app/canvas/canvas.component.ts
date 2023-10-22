@@ -1,10 +1,12 @@
 import { Component, ElementRef, ViewChild } from '@angular/core'
 import { ColorService } from '../services/color.service'
 import { Subscription } from 'rxjs'
+import { ExportImportService } from '../services/export-import.service'
 
 @Component({
   selector: 'app-canvas',
   templateUrl: './canvas.component.html',
+  providers: [ExportImportService],
   styleUrls: ['./canvas.component.css']
 })
 
@@ -18,8 +20,9 @@ export class CanvasComponent {
   initialX: number
   initialY: number
   colorSubscription: Subscription
-
-  constructor(private colorService: ColorService) {
+  input = document.createElement('input')
+  
+  constructor(private colorService: ColorService, public exportImportService: ExportImportService) {
     this.colorSubscription = this.colorService.getColor().subscribe((color) => {
       this.ctx.strokeStyle = color
       this.ctx.fillStyle = color
@@ -70,50 +73,7 @@ export class CanvasComponent {
     this.isResizing = false
   }
 
-  exportToPNG() {
-    const canvas = this.canvas.nativeElement
-    const dataURL = canvas.toDataURL('image/png')
-    const link = document.createElement('a')
-    link.href = dataURL
-    link.download = 'canvas-export.png'
-    link.click()
-  }
-
-  exportToJPEG() {
-    const canvas = this.canvas.nativeElement
-    const dataURL = canvas.toDataURL('image/jpeg')
-    const link = document.createElement('a')
-    link.href = dataURL
-    link.download = 'canvas-export.jpg'
-    link.click()
-  }
-
   showMenu() {
     document.getElementById("origamiMenu").classList.toggle("show")
-  }
-
-  importImage() {
-    const input = document.createElement('input')
-    input.type = 'file'
-
-    input.addEventListener('change', (event) => {
-      const file = (event.target as HTMLInputElement).files[0]
-      if (file) {
-        const reader = new FileReader()
-        reader.onload = () => {
-          const img = new Image()
-          img.src = reader.result as string
-
-          img.onload = () => {
-            this.canvas.nativeElement.width = img.width
-            this.canvas.nativeElement.height = img.height
-            this.ctx.drawImage(img, 0, 0, img.width, img.height)
-          };
-        };
-        reader.readAsDataURL(file)
-      }
-    });
-
-    input.click()
   }
 }

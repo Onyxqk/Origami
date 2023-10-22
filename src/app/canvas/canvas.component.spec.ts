@@ -1,21 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { CanvasComponent } from './canvas.component'
 import { ColorService } from '../services/color.service'
+import { ExportImportService } from '../services/export-import.service'
 
 describe('CanvasComponent', () => {
   let component: CanvasComponent
   let fixture: ComponentFixture<CanvasComponent>
   let colorService: ColorService
+  let exportImportService: ExportImportService
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [CanvasComponent],
-      providers: [ColorService],
+      providers: [ColorService, ExportImportService],
     })
 
     fixture = TestBed.createComponent(CanvasComponent)
     component = fixture.componentInstance
     colorService = TestBed.inject(ColorService)
+    exportImportService = TestBed.inject(ExportImportService)
     component.ctx = {
       beginPath: jasmine.createSpy('beginPath'),
       moveTo: jasmine.createSpy('moveTo'),
@@ -136,51 +139,4 @@ describe('CanvasComponent', () => {
 
     expect(component.isResizing).toBe(false)
   })
-
-  it('should export to PNG', () => {
-    spyOn(component.canvas.nativeElement, 'toDataURL').and.returnValue('data:image/png;base64')
-    const link: any = { click: () => { } }
-    spyOn(document, 'createElement').and.returnValue(link)
-
-    component.exportToPNG()
-
-    expect(component.canvas.nativeElement.toDataURL).toHaveBeenCalledWith('image/png')
-    expect(document.createElement).toHaveBeenCalledWith('a')
-    expect(link.href).toBe('data:image/png;base64')
-    expect(link.download).toBe('canvas-export.png')
-  });
-
-  it('should export to JPEG', () => {
-    spyOn(component.canvas.nativeElement, 'toDataURL').and.returnValue('data:image/jpeg;base64')
-    const link: any = { click: () => { } }
-    spyOn(document, 'createElement').and.returnValue(link)
-
-    component.exportToJPEG()
-
-    expect(component.canvas.nativeElement.toDataURL).toHaveBeenCalledWith('image/jpeg')
-    expect(document.createElement).toHaveBeenCalledWith('a')
-    expect(link.href).toBe('data:image/jpeg;base64')
-    expect(link.download).toBe('canvas-export.jpg')
-  });
-
-  it('should import an image', () => {
-    component.showMenu()
-    const fileReader = new FileReader()
-    spyOn(window, 'FileReader').and.returnValue(fileReader)
-    spyOn(fileReader, 'readAsDataURL')
-    spyOn(fileReader, 'addEventListener').and.callFake((event, callback) => {
-      if (event === 'load') {
-        callback(new Event('load'))
-      }
-    })
-
-    const input = document.createElement('input')
-    spyOn(document, 'createElement').and.returnValue(input)
-    const changeEvent = document.createEvent('Event')
-    changeEvent.initEvent('change', true, true)
-    component.canvas.nativeElement = document.createElement('canvas')
-    component.importImage()
-    input.dispatchEvent(changeEvent)
-  })
-  
 })

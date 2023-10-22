@@ -1,20 +1,15 @@
 <div class="menu">
-  <button class="origami-button" (click)="showMenu()"><img src="../../assets/origami transparent.png" width="32" height="32" (click)="showMenu()" alt="Origami Menu Button"></button>
+  <button class="origami-button" (click)="showMenu()"><img src="../../assets/origami transparent.png" width="32"
+      height="32" (click)="showMenu()" alt="Origami Menu Button"></button>
   <div id="origamiMenu" class="menu-content">
-    <a (click)="importImage()">Import an image</a>
-    <a (click)="exportToPNG()">Export to PNG</a>
-    <a (click)="exportToJPEG()">Export to JPEG</a>
+    <a (click)="this.exportImportService.importImage(this.input, this.canvas.nativeElement)">Import an image</a>
+    <a (click)="this.exportImportService.exportImage(this.canvas.nativeElement, 'png')">Export to PNG</a>
+    <a (click)="this.exportImportService.exportImage(this.canvas.nativeElement, 'jpeg')">Export to JPEG</a>
   </div>
 </div>
 
-<div
-  class="resizable-canvas"
-  (mousedown)="startResize($event)"
-  (mousemove)="resize($event)"
-  (mouseup)="stopResize()">
-  <canvas #canvasElement class="canvas" 
-    (mousedown)="startDrawing($event)"
-    (mousemove)="draw($event)"
+<div class="resizable-canvas" (mousedown)="startResize($event)" (mousemove)="resize($event)" (mouseup)="stopResize()">
+  <canvas #canvasElement class="canvas" (mousedown)="startDrawing($event)" (mousemove)="draw($event)"
     (mouseup)="stopDrawing()">
   </canvas>
 </div>
