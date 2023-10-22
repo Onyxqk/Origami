@@ -41,6 +41,21 @@ describe('ExportImportService', () => {
     expect(linkClickSpy).toHaveBeenCalled()
   })
 
+  it('should export to SVG', () => {
+    const canvas = document.createElement('canvas')
+    spyOn(document as any, 'createElement').and.returnValue({
+      href: '',
+      download: '',
+      click: jasmine.createSpy(),
+    })
+    spyOn(URL, 'revokeObjectURL')
+
+    service.exportImage(canvas, 'svg')
+
+    expect(document.createElement).toHaveBeenCalled()
+    expect(URL.revokeObjectURL).toHaveBeenCalled()
+  })
+
   it('should import an image', () => {
     const fileReader = new FileReader()
     spyOn(window, 'FileReader').and.returnValue(fileReader)
