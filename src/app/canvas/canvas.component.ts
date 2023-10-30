@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core'
+import { BrushService } from '../services/brush.service'
 import { ColorService } from '../services/color.service'
 import { Subscription } from 'rxjs'
 import { ExportImportService } from '../services/export-import.service'
@@ -20,12 +21,26 @@ export class CanvasComponent {
   initialX: number
   initialY: number
   colorSubscription: Subscription
+  brushSubscription: Subscription
   input = document.createElement('input')
-  
-  constructor(private colorService: ColorService, public exportImportService: ExportImportService) {
+
+  constructor(private colorService: ColorService, private brushService: BrushService, public exportImportService: ExportImportService) {
     this.colorSubscription = this.colorService.getColor().subscribe((color) => {
       this.ctx.strokeStyle = color
       this.ctx.fillStyle = color
+    })
+    this.brushSubscription = this.brushService.getLineWidth().subscribe((lineWidth) => {
+      switch (lineWidth) {
+        case 1:
+          this.ctx.lineWidth = 1
+          break
+        case 2:
+          this.ctx.lineWidth = 5
+          break
+        case 3:
+          this.ctx.lineWidth = 10
+          break
+      }
     })
   }
 
