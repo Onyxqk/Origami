@@ -22,23 +22,25 @@ export class CanvasComponent {
   initialY: number
   colorSubscription: Subscription
   brushSubscription: Subscription
+  thinLineWidth = 1
+  mediumLineWidth = 5
+  thickLineWidth = 10
   input = document.createElement('input')
 
   constructor(private colorService: ColorService, private brushService: BrushService, public exportImportService: ExportImportService) {
     this.colorSubscription = this.colorService.getColor().subscribe((color) => {
       this.ctx.strokeStyle = color
-      this.ctx.fillStyle = color
     })
     this.brushSubscription = this.brushService.getLineWidth().subscribe((lineWidth) => {
       switch (lineWidth) {
         case 1:
-          this.ctx.lineWidth = 1
+          this.ctx.lineWidth = this.thinLineWidth
           break
         case 2:
-          this.ctx.lineWidth = 5
+          this.ctx.lineWidth = this.mediumLineWidth
           break
         case 3:
-          this.ctx.lineWidth = 10
+          this.ctx.lineWidth = this.thickLineWidth
           break
       }
     })
@@ -46,6 +48,15 @@ export class CanvasComponent {
 
   ngAfterViewInit() {
     this.ctx = this.canvas.nativeElement.getContext('2d')
+  }
+
+ ngOnDestroy() {
+    if (this.colorSubscription) {
+      this.colorSubscription.unsubscribe();
+    }
+    if (this.brushSubscription) {
+      this.brushSubscription.unsubscribe();
+    }
   }
 
   startDrawing(event: MouseEvent) {

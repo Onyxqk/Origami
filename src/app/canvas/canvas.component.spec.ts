@@ -1,11 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { CanvasComponent } from './canvas.component'
+import { BrushService } from '../services/brush.service'
 import { ColorService } from '../services/color.service'
 import { ExportImportService } from '../services/export-import.service'
+import { of } from 'rxjs'
 
 describe('CanvasComponent', () => {
   let component: CanvasComponent
   let fixture: ComponentFixture<CanvasComponent>
+  let brushService: BrushService
   let colorService: ColorService
   let exportImportService: ExportImportService
 
@@ -17,6 +20,7 @@ describe('CanvasComponent', () => {
 
     fixture = TestBed.createComponent(CanvasComponent)
     component = fixture.componentInstance
+    brushService = TestBed.inject(BrushService)
     colorService = TestBed.inject(ColorService)
     exportImportService = TestBed.inject(ExportImportService)
     component.ctx = {
@@ -26,6 +30,12 @@ describe('CanvasComponent', () => {
       stroke: jasmine.createSpy('stroke'),
       closePath: jasmine.createSpy('closePath'),
     } as unknown as CanvasRenderingContext2D
+  })
+
+  afterEach(() => {
+    if (component.brushSubscription) {
+      component.brushSubscription.unsubscribe()
+    }
   })
 
   it('should create', () => {
@@ -138,5 +148,35 @@ describe('CanvasComponent', () => {
     component.stopResize()
 
     expect(component.isResizing).toBe(false)
+  })
+
+  it('should set thin line width', () => {
+    spyOn(brushService, 'getLineWidth').and.returnValue(of(component.thinLineWidth))
+
+    expect(component.brushSubscription).toBeDefined();
+
+    component.brushSubscription?.add(() => {
+      expect(component.ctx.lineWidth).toBe(component.thinLineWidth)
+    })
+  })
+
+  it('should set medium line width', () => {
+    spyOn(brushService, 'getLineWidth').and.returnValue(of(component.mediumLineWidth))
+
+    expect(component.brushSubscription).toBeDefined();
+
+    component.brushSubscription?.add(() => {
+      expect(component.ctx.lineWidth).toBe(component.mediumLineWidth)
+    })
+  })
+
+  it('should set thick line width', () => {
+    spyOn(brushService, 'getLineWidth').and.returnValue(of(component.thickLineWidth))
+
+    expect(component.brushSubscription).toBeDefined();
+
+    component.brushSubscription?.add(() => {
+      expect(component.ctx.lineWidth).toBe(component.thickLineWidth)
+    })
   })
 })

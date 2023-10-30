@@ -59,24 +59,24 @@
 
 @media screen and (min-width: 950px) {
   .origami-button, .menu-content {
-    margin-left: 3rem;
+    margin-left: 1rem;
   }
 }
 
 @media screen and (min-width: 1300px) {
   .origami-button, .menu-content {
-    margin-left: 11rem;
+    margin-left: 9rem;
   }
 }
 
 @media screen and (min-width: 1440px) {
   .origami-button, .menu-content {
-    margin-left: 14rem;
+    margin-left: 12rem;
   }
 }
 
 @media screen and (min-width: 1920px) {
   .origami-button, .menu-content {
-    margin-left: 22rem;
+    margin-left: 20rem;
   }
 }
