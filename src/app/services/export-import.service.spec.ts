@@ -56,6 +56,15 @@ describe('ExportImportService', () => {
     expect(URL.revokeObjectURL).toHaveBeenCalled()
   })
 
+  it('should export to PDF', () => {
+    const canvas = document.createElement('canvas');
+    spyOn(service, 'canvasToPDF');
+
+    service.exportImage(canvas, 'pdf');
+
+    expect(service.canvasToPDF).toHaveBeenCalledWith(canvas)
+  })
+
   it('should import an image', () => {
     const fileReader = new FileReader()
     spyOn(window, 'FileReader').and.returnValue(fileReader)
@@ -74,7 +83,7 @@ describe('ExportImportService', () => {
     input.dispatchEvent(changeEvent)
     
     service.importImage(input, canvas)
-    expect(service.importImage(input, canvas))
+    expect(service.importImage(input, canvas)).toBeUndefined()
   })
  
 })
