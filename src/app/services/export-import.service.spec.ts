@@ -65,6 +65,19 @@ describe('ExportImportService', () => {
     expect(service.canvasToPDF).toHaveBeenCalledWith(canvas)
   })
 
+  it('should export to GIF', () => {
+    const canvas = document.createElement('canvas')
+    const linkClickSpy = spyOn(document as any, 'createElement').and.returnValue({
+      href: '',
+      download: '',
+      click: jasmine.createSpy(),
+    })
+
+    service.exportImage(canvas, 'gif')
+
+    expect(linkClickSpy).toHaveBeenCalled()
+  })
+
   it('should import an image', () => {
     const fileReader = new FileReader()
     spyOn(window, 'FileReader').and.returnValue(fileReader)
