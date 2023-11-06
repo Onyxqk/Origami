@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core'
+import html2canvas from 'html2canvas'
+import jsPDF from 'jspdf'
 
 @Injectable()
 export class ExportImportService {
-  exportImage(canvas: HTMLCanvasElement, format: 'png' | 'jpeg' | 'svg'): void {
+  exportImage(canvas: HTMLCanvasElement, format: 'png' | 'jpeg' | 'svg' | 'pdf'): void {
     if (format === 'svg') {
       const svgString = this.canvasToSVG(canvas)
       const blob = new Blob([svgString], { type: 'image/svg+xml' })
@@ -14,7 +16,11 @@ export class ExportImportService {
       link.click()
       
       URL.revokeObjectURL(url)
-    } else {
+    }
+    else if (format === 'pdf') {
+      this.canvasToPDF(canvas)
+    }
+    else {
       const dataURL = canvas.toDataURL(`image/${format}`)
       const fileName = `canvas-export.${format}`
       
@@ -24,9 +30,18 @@ export class ExportImportService {
       link.click()
     }
   }
-  
+
+  canvasToPDF(canvas: HTMLCanvasElement): void {
+    html2canvas(canvas).then((canvasImage) => {
+      const imageData = canvasImage.toDataURL('image/png')
+      const pdf = new jsPDF()
+      pdf.addImage(imageData, 'PNG', 0, 0, canvas.width, canvas.height)
+      pdf.save('canvas-export.pdf')
+    })
+  }
+
   canvasToSVG(canvas: HTMLCanvasElement): string {
-    const serializer = new XMLSerializer();
+    const serializer = new XMLSerializer()
     
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
     svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
