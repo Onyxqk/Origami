@@ -4,7 +4,7 @@ import jsPDF from 'jspdf'
 
 @Injectable()
 export class ExportImportService {
-  exportImage(canvas: HTMLCanvasElement, format: 'png' | 'jpeg' | 'svg' | 'pdf'): void {
+  exportImage(canvas: HTMLCanvasElement, format: 'png' | 'jpeg' | 'svg' | 'pdf' | 'gif'): void {
     if (format === 'svg') {
       const svgString = this.canvasToSVG(canvas)
       const blob = new Blob([svgString], { type: 'image/svg+xml' })
