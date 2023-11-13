@@ -3,6 +3,7 @@ import { CanvasComponent } from './canvas.component'
 import { BrushService } from '../services/brush.service'
 import { ColorService } from '../services/color.service'
 import { ExportImportService } from '../services/export-import.service'
+import { ModeService } from '../services/mode.service'
 import { ShapeService } from '../services/shape.service'
 import { TextService } from '../services/text.service'
 import { of } from 'rxjs'
@@ -13,15 +14,19 @@ describe('CanvasComponent', () => {
   let brushService: BrushService
   let colorService: ColorService
   let exportImportService: ExportImportService
+  let modeServiceSpy: jasmine.SpyObj<ModeService>
 
   beforeEach(() => {
+    const spy = jasmine.createSpyObj('ModeService', ['getMode'])
+
     TestBed.configureTestingModule({
       declarations: [CanvasComponent],
-      providers: [ColorService, ExportImportService, ShapeService, TextService],
+      providers: [ColorService, ExportImportService, { provide: ModeService, useValue: spy }, ShapeService, TextService],
     })
 
     fixture = TestBed.createComponent(CanvasComponent)
     component = fixture.componentInstance
+    modeServiceSpy = TestBed.inject(ModeService) as jasmine.SpyObj<ModeService>
     brushService = TestBed.inject(BrushService)
     colorService = TestBed.inject(ColorService)
     exportImportService = TestBed.inject(ExportImportService)
@@ -177,7 +182,7 @@ describe('CanvasComponent', () => {
       component.drawShape(event, 'triangle')
 
       expect(spy).toHaveBeenCalledOnceWith(component.ctx, jasmine.any(Number), jasmine.any(Number), 30, 40, 50, 60)
-    });
+    })
 
     it('should draw a rectangle when shape is "rectangle"', () => {
       const spy = spyOn(component.shapeService, 'drawRectangle')
@@ -205,5 +210,47 @@ describe('CanvasComponent', () => {
 
       expect(spy).not.toHaveBeenCalled()
     })
+  })
+
+  describe('addText', () => {
+    it('should call textService.drawText when text is provided', () => {
+      const spy = spyOn(component.textService, 'drawText')
+      const event = new MouseEvent('click')
+      spyOn(window, 'prompt').and.returnValue('Hello, World!')
+
+      component.addText(event)
+
+      expect(spy).toHaveBeenCalledOnceWith(component.ctx, jasmine.any(Number), jasmine.any(Number), 'Hello, World!')
+    })
+
+    it('should not call textService.drawText when text is not provided', () => {
+      const spy = spyOn(component.textService, 'drawText')
+      const event = new MouseEvent('click')
+      spyOn(window, 'prompt').and.returnValue(null)
+
+      component.addText(event)
+
+      expect(spy).not.toHaveBeenCalled()
+    })
+  })
+
+  it('should call drawShape for shape mode', () => {
+    const drawShapeSpy = spyOn(component, 'drawShape')
+    const event = new MouseEvent('mousedown')
+
+    modeServiceSpy.getMode.and.returnValue('triangle')
+    component.startDrawing(event)
+
+    expect(drawShapeSpy).toHaveBeenCalledOnceWith(event, 'triangle')
+  })
+
+  it('should call addText for text mode', () => {
+    const addTextSpy = spyOn(component, 'addText')
+    const event = new MouseEvent('mousedown')
+
+    modeServiceSpy.getMode.and.returnValue('text')
+    component.startDrawing(event)
+
+    expect(addTextSpy).toHaveBeenCalledOnceWith(event)
   })
 })

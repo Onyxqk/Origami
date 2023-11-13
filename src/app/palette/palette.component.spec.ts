@@ -17,7 +17,7 @@ describe('PaletteComponent', () => {
     })
     fixture = TestBed.createComponent(PaletteComponent)
     component = fixture.componentInstance
-    brushService = TestBed.inject(BrushService);
+    brushService = TestBed.inject(BrushService)
     colorService = TestBed.inject(ColorService)
     fixture.detectChanges()
   })

@@ -31,7 +31,7 @@ export class CanvasComponent {
 
   constructor(private colorService: ColorService, private brushService: BrushService,
     public exportImportService: ExportImportService, public shapeService: ShapeService,
-    private modeService: ModeService, private textService: TextService) {
+    private modeService: ModeService, public textService: TextService) {
 
     this.colorSubscription = this.colorService.getColor().subscribe((color) => {
       this.ctx.strokeStyle = color
@@ -57,10 +57,10 @@ export class CanvasComponent {
 
   ngOnDestroy() {
     if (this.colorSubscription) {
-      this.colorSubscription.unsubscribe();
+      this.colorSubscription.unsubscribe()
     }
     if (this.brushSubscription) {
-      this.brushSubscription.unsubscribe();
+      this.brushSubscription.unsubscribe()
     }
   }
 

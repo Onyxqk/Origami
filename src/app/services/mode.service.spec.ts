@@ -1,9 +1,8 @@
-import { TestBed } from '@angular/core/testing';
-
-import { ModeService } from './mode.service';
+import { TestBed } from '@angular/core/testing'
+import { ModeService } from './mode.service'
 
 describe('ModeService', () => {
-  let service: ModeService;
+  let service: ModeService
 
   beforeEach(() => {
     TestBed.configureTestingModule({})
