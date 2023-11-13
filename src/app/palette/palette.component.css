@@ -97,7 +97,7 @@ input[type='radio'] {
     cursor: pointer;
   }
 
-  .addShape {
+  .addShape, .addText {
     background-color: black;
     color: white;
     border: none;
@@ -105,4 +105,8 @@ input[type='radio'] {
     padding-left: 1rem;
     padding-right: 1rem;
     vertical-align: middle;
+  }
+
+  .addText {
+    font-family: serif;
   }
