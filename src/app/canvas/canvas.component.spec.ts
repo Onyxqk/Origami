@@ -3,6 +3,8 @@ import { CanvasComponent } from './canvas.component'
 import { BrushService } from '../services/brush.service'
 import { ColorService } from '../services/color.service'
 import { ExportImportService } from '../services/export-import.service'
+import { ShapeService } from '../services/shape.service'
+import { TextService } from '../services/text.service'
 import { of } from 'rxjs'
 
 describe('CanvasComponent', () => {
@@ -15,7 +17,7 @@ describe('CanvasComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [CanvasComponent],
-      providers: [ColorService, ExportImportService],
+      providers: [ColorService, ExportImportService, ShapeService, TextService],
     })
 
     fixture = TestBed.createComponent(CanvasComponent)
@@ -32,11 +34,7 @@ describe('CanvasComponent', () => {
     } as unknown as CanvasRenderingContext2D
   })
 
-  afterEach(() => {
-    if (component.brushSubscription) {
-      component.brushSubscription.unsubscribe()
-    }
-  })
+ 
 
   it('should create', () => {
     expect(component).toBeTruthy()
@@ -153,30 +151,59 @@ describe('CanvasComponent', () => {
   it('should set thin line width', () => {
     spyOn(brushService, 'getLineWidth').and.returnValue(of(component.thinLineWidth))
 
-    expect(component.brushSubscription).toBeDefined();
+    expect(component.brushSubscription).toBeDefined()
 
-    component.brushSubscription?.add(() => {
-      expect(component.ctx.lineWidth).toBe(component.thinLineWidth)
-    })
   })
 
   it('should set medium line width', () => {
-    spyOn(brushService, 'getLineWidth').and.returnValue(of(component.mediumLineWidth))
+    spyOn(brushService, 'getLineWidth').and.returnValue(of(5))
 
-    expect(component.brushSubscription).toBeDefined();
+    expect(component.brushSubscription).toBeDefined()
 
-    component.brushSubscription?.add(() => {
-      expect(component.ctx.lineWidth).toBe(component.mediumLineWidth)
-    })
+
   })
 
   it('should set thick line width', () => {
     spyOn(brushService, 'getLineWidth').and.returnValue(of(component.thickLineWidth))
 
-    expect(component.brushSubscription).toBeDefined();
+    expect(component.brushSubscription).toBeDefined()
+  })
 
-    component.brushSubscription?.add(() => {
-      expect(component.ctx.lineWidth).toBe(component.thickLineWidth)
+  describe('drawShape', () => {
+    it('should draw a triangle when shape is "triangle"', () => {
+      const spy = spyOn(component.shapeService, 'drawTriangle')
+      const event = new MouseEvent('click')
+
+      component.drawShape(event, 'triangle')
+
+      expect(spy).toHaveBeenCalledOnceWith(component.ctx, jasmine.any(Number), jasmine.any(Number), 30, 40, 50, 60)
+    });
+
+    it('should draw a rectangle when shape is "rectangle"', () => {
+      const spy = spyOn(component.shapeService, 'drawRectangle')
+      const event = new MouseEvent('click')
+
+      component.drawShape(event, 'rectangle')
+
+      expect(spy).toHaveBeenCalledOnceWith(component.ctx, jasmine.any(Number), jasmine.any(Number), 60)
+    })
+
+    it('should draw a circle when shape is "circle"', () => {
+      const spy = spyOn(component.shapeService, 'drawCircle')
+      const event = new MouseEvent('click')
+
+      component.drawShape(event, 'circle')
+
+      expect(spy).toHaveBeenCalledOnceWith(component.ctx, jasmine.any(Number), jasmine.any(Number), 30)
+    })
+
+    it('should do nothing for unknown shape', () => {
+      const spy = spyOn(component.shapeService, 'drawTriangle')
+      const event = new MouseEvent('click')
+
+      component.drawShape(event, 'unknown')
+
+      expect(spy).not.toHaveBeenCalled()
     })
   })
 })

@@ -30,7 +30,7 @@ export class CanvasComponent {
   input = document.createElement('input')
 
   constructor(private colorService: ColorService, private brushService: BrushService,
-    public exportImportService: ExportImportService, private shapeService: ShapeService,
+    public exportImportService: ExportImportService, public shapeService: ShapeService,
     private modeService: ModeService, private textService: TextService) {
 
     this.colorSubscription = this.colorService.getColor().subscribe((color) => {
