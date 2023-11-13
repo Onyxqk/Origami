@@ -11,4 +11,7 @@
     <input type="radio" class="black" name="color" aria-label="black" value="black" (change)="setColor('black')">
     <input type="radio" class="white" name="color" aria-label="white" value="white" (change)="setColor('white')">
     <input type="range" class="line-width-range" [(ngModel)]="lineWidth" (input)="setLineWidth()" min="1" max="3"/>
+    <button class="addShape" (click)="this.modeService.setMode('triangle')">△</button>
+    <button class="addShape" (click)="this.modeService.setMode('circle')">○</button>
+    <button class="addShape" (click)="this.modeService.setMode('rectangle')">□</button>
 </div>

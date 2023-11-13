@@ -1,8 +1,9 @@
 .palette {
     background-color: black;
     width: max-content;
-    padding-left: 16px;
-    padding-right: 16px;
+    max-height: 78px;
+    padding-left: 1rem;
+    padding-right: 1rem;
     margin-top: 4px;
     border-radius: 10px;
     overflow-x: scroll;
@@ -72,6 +73,7 @@ input[type='radio'] {
     opacity: 0.7;
     -webkit-transition: .2s;
     transition: opacity .2s;
+    vertical-align: middle;
   }
   
   .line-width-range:hover {
@@ -93,4 +95,14 @@ input[type='radio'] {
     height: 25px;
     background: rgb(105, 105, 135);
     cursor: pointer;
+  }
+
+  .addShape {
+    background-color: black;
+    color: white;
+    border: none;
+    font-size: 2rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    vertical-align: middle;
   }
