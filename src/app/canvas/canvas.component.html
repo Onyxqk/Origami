@@ -2,13 +2,13 @@
   <button class="origami-button" (click)="showMenu()"><img src="../../assets/origami transparent.png" width="32"
       height="32" (click)="showMenu()" alt="Origami Menu Button"></button>
   <div id="origamiMenu" class="menu-content">
+    <a (click)="undo()">Undo</a>
     <a (click)="this.exportImportService.importImage(this.input, this.canvas.nativeElement)">Import an image</a>
     <a (click)="this.exportImportService.exportImage(this.canvas.nativeElement, 'png')">Export to PNG</a>
     <a (click)="this.exportImportService.exportImage(this.canvas.nativeElement, 'jpeg')">Export to JPEG</a>
     <a (click)="this.exportImportService.exportImage(this.canvas.nativeElement, 'gif')">Export to GIF</a>
     <a (click)="this.exportImportService.exportImage(this.canvas.nativeElement, 'svg')">Export to SVG</a>
     <a (click)="this.exportImportService.exportImage(this.canvas.nativeElement, 'pdf')">Export to PDF</a>
-
   </div>
 </div>
 

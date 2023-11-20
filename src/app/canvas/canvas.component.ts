@@ -6,6 +6,7 @@ import { ExportImportService } from '../services/export-import.service'
 import { ModeService } from '../services/mode.service'
 import { ShapeService } from '../services/shape.service'
 import { TextService } from '../services/text.service'
+import { UndoRedoService } from '../services/undo-redo.service'
 @Component({
   selector: 'app-canvas',
   templateUrl: './canvas.component.html',
@@ -31,7 +32,7 @@ export class CanvasComponent {
 
   constructor(private colorService: ColorService, private brushService: BrushService,
     public exportImportService: ExportImportService, public shapeService: ShapeService,
-    private modeService: ModeService, public textService: TextService) {
+    private modeService: ModeService, public textService: TextService, private undoRedoService: UndoRedoService) {
 
     this.colorSubscription = this.colorService.getColor().subscribe((color) => {
       this.ctx.strokeStyle = color
@@ -76,6 +77,9 @@ export class CanvasComponent {
       this.ctx.beginPath()
       this.ctx.moveTo(event.clientX - this.canvas.nativeElement.getBoundingClientRect().left, event.clientY - this.canvas.nativeElement.getBoundingClientRect().top)
     }
+    const currentState = this.undoRedoService.saveCanvasState(this.canvas.nativeElement)
+    this.undoRedoService.pushUndoAction({ action: 'draw', data: currentState })
+    this.undoRedoService.clearRedoStack()
   }
 
   draw(event: MouseEvent) {
@@ -140,4 +144,11 @@ export class CanvasComponent {
     }
   }
 
+  undo() {
+    const lastAction = this.undoRedoService.popUndoAction()
+    if (lastAction) {
+      this.undoRedoService.pushRedoAction(lastAction)
+      this.undoRedoService.restoreCanvasState(this.canvas.nativeElement, lastAction.data)
+    }
+  }
 }
