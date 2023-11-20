@@ -7,7 +7,7 @@ export class ModeService {
   mode = 'brush'
   constructor() { }
 
-  setMode(mode: 'brush' | 'triangle' | 'circle' | 'rectangle' | 'text'): void {
+  setMode(mode: 'brush' | 'triangle' | 'circle' | 'rectangle' | 'text' | 'erase'): void {
     this.mode = mode
   }
 

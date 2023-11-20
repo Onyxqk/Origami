@@ -97,7 +97,7 @@ input[type='radio'] {
     cursor: pointer;
   }
 
-  .addShape, .addText {
+  .addShape, .addText, .erase {
     background-color: black;
     color: white;
     border: none;

@@ -66,11 +66,14 @@ export class CanvasComponent {
   }
 
   startDrawing(event: MouseEvent) {
-    if (this.modeService.getMode() !== 'brush' && this.modeService.getMode() !== 'text') {
+    if (this.modeService.getMode() !== 'brush' && this.modeService.getMode() !== 'text' && this.modeService.getMode() !== 'erase') {
       this.drawShape(event, this.modeService.getMode())
     }
     if (this.modeService.getMode() === 'text') {
       this.addText(event)
+    }
+    if(this.modeService.getMode()=== 'erase') {
+      this.erase(event)
     }
     else {
       this.isDrawing = true
@@ -80,6 +83,13 @@ export class CanvasComponent {
     const currentState = this.undoRedoService.saveCanvasState(this.canvas.nativeElement)
     this.undoRedoService.pushUndoAction({ action: 'draw', data: currentState })
     this.undoRedoService.clearRedoStack()
+  }
+
+  erase(event: MouseEvent) {
+    const x = event.clientX - this.canvas.nativeElement.getBoundingClientRect().left
+    const y = event.clientY - this.canvas.nativeElement.getBoundingClientRect().top
+
+    this.ctx.clearRect(x, y, x + this.ctx.lineWidth, y + this.ctx.lineWidth)
   }
 
   draw(event: MouseEvent) {
