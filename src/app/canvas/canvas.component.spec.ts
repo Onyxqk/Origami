@@ -285,4 +285,11 @@ describe('CanvasComponent', () => {
     expect(component.erase)
     expect(component.ctx.clearRect).toHaveBeenCalled()
   })
+
+  it('should reset', () => {
+    const event = new MouseEvent('mousedown')
+    component.reset()
+    expect(component.reset)
+    expect(component.ctx.clearRect).toHaveBeenCalled()
+  })
 })

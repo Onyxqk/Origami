@@ -92,6 +92,10 @@ export class CanvasComponent {
     this.ctx.clearRect(x, y, x + this.ctx.lineWidth, y + this.ctx.lineWidth)
   }
 
+  reset() {
+    this.ctx.clearRect(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height)
+  }
+
   draw(event: MouseEvent) {
     if (!this.isDrawing) return
 
