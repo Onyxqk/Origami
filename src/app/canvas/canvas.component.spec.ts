@@ -6,6 +6,7 @@ import { ExportImportService } from '../services/export-import.service'
 import { ModeService } from '../services/mode.service'
 import { ShapeService } from '../services/shape.service'
 import { TextService } from '../services/text.service'
+import { UndoRedoService } from '../services/undo-redo.service'
 import { of } from 'rxjs'
 
 describe('CanvasComponent', () => {
@@ -15,13 +16,13 @@ describe('CanvasComponent', () => {
   let colorService: ColorService
   let exportImportService: ExportImportService
   let modeServiceSpy: jasmine.SpyObj<ModeService>
-
+  let undoRedoService: UndoRedoService
   beforeEach(() => {
     const spy = jasmine.createSpyObj('ModeService', ['getMode'])
 
     TestBed.configureTestingModule({
       declarations: [CanvasComponent],
-      providers: [ColorService, ExportImportService, { provide: ModeService, useValue: spy }, ShapeService, TextService],
+      providers: [ColorService, ExportImportService, { provide: ModeService, useValue: spy }, ShapeService, TextService, UndoRedoService],
     })
 
     fixture = TestBed.createComponent(CanvasComponent)
@@ -30,6 +31,7 @@ describe('CanvasComponent', () => {
     brushService = TestBed.inject(BrushService)
     colorService = TestBed.inject(ColorService)
     exportImportService = TestBed.inject(ExportImportService)
+    undoRedoService = TestBed.inject(UndoRedoService)
     component.ctx = {
       beginPath: jasmine.createSpy('beginPath'),
       moveTo: jasmine.createSpy('moveTo'),
@@ -252,5 +254,17 @@ describe('CanvasComponent', () => {
     component.startDrawing(event)
 
     expect(addTextSpy).toHaveBeenCalledOnceWith(event)
+  })
+
+  it('should undo the last drawing action', () => {
+    const mockDrawingAction = { action: 'draw', data: new ImageData(50, 50) }
+    
+    spyOn(undoRedoService, 'popUndoAction').and.returnValue(mockDrawingAction)
+    spyOn(undoRedoService, 'pushRedoAction')
+
+    component.undo()
+
+    expect(undoRedoService.popUndoAction).toHaveBeenCalled()
+    expect(undoRedoService.pushRedoAction).toHaveBeenCalledWith(mockDrawingAction)
   })
 })
