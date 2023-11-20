@@ -36,4 +36,10 @@ describe('ModeService', () => {
     service.setMode('rectangle')
     expect(service.mode).toBe(mode)
   })
+
+  it('should get mode', () => {
+    const mode = 'rectangle'
+    service.setMode('rectangle')
+    expect(service.getMode()).toBe(mode)
+  })
 })

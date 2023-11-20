@@ -38,6 +38,7 @@ describe('CanvasComponent', () => {
       lineTo: jasmine.createSpy('lineTo'),
       stroke: jasmine.createSpy('stroke'),
       closePath: jasmine.createSpy('closePath'),
+      clearRect: jasmine.createSpy('clearRect'),
     } as unknown as CanvasRenderingContext2D
   })
 
@@ -266,5 +267,22 @@ describe('CanvasComponent', () => {
 
     expect(undoRedoService.popUndoAction).toHaveBeenCalled()
     expect(undoRedoService.pushRedoAction).toHaveBeenCalledWith(mockDrawingAction)
+  })
+
+  it('should call erase for erase mode', () => {
+    const eraseSpy = spyOn(component, 'erase')
+    const event = new MouseEvent('mousedown')
+
+    modeServiceSpy.getMode.and.returnValue('erase')
+    component.startDrawing(event)
+
+    expect(eraseSpy).toHaveBeenCalledOnceWith(event)
+  })
+
+  it('should erase', () => {
+    const event = new MouseEvent('mousedown')
+    component.erase(event)
+    expect(component.erase)
+    expect(component.ctx.clearRect).toHaveBeenCalled()
   })
 })
