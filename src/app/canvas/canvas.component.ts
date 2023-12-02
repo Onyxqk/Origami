@@ -30,7 +30,7 @@ export class CanvasComponent {
   mediumLineWidth = 5
   thickLineWidth = 10
   input = document.createElement('input')
-  private currentPoints: { x: number; y: number }[] = []
+  currentPoints: { x: number; y: number }[] = []
 
   constructor(private colorService: ColorService, private brushService: BrushService,
     public exportImportService: ExportImportService, public shapeService: ShapeService,
