@@ -56,6 +56,7 @@ export class CanvasComponent {
 
   ngAfterViewInit() {
     this.ctx = this.canvas.nativeElement.getContext('2d')
+    this.saveCanvasState()
   }
 
   ngOnDestroy() {
@@ -87,7 +88,7 @@ export class CanvasComponent {
     if (this.modeService.getMode() === 'text') {
       this.addText(event)
     }
-    if(this.modeService.getMode()=== 'erase') {
+    if (this.modeService.getMode() === 'erase') {
       this.erase(event)
     }
     else {
@@ -98,9 +99,7 @@ export class CanvasComponent {
         y: event.clientY - this.canvas.nativeElement.getBoundingClientRect().top,
       })
     }
-    const currentState = this.undoRedoService.saveCanvasState(this.canvas.nativeElement)
-    this.undoRedoService.pushUndoAction({ action: 'draw', data: currentState })
-    this.undoRedoService.clearRedoStack()
+    this.saveCanvasState()
   }
 
   erase(event: MouseEvent) {
@@ -182,11 +181,26 @@ export class CanvasComponent {
     }
   }
 
+  saveCanvasState() {
+    this.undoRedoService.saveState(this.ctx.getImageData(0, 0, this.canvas.nativeElement.width, this.canvas.nativeElement.height))
+  }
+
   undo() {
-    const lastAction = this.undoRedoService.popUndoAction()
-    if (lastAction) {
-      this.undoRedoService.pushRedoAction(lastAction)
-      this.undoRedoService.restoreCanvasState(this.canvas.nativeElement, lastAction.data)
+    const state = this.undoRedoService.undo()
+    if (state) {
+      this.restoreCanvasState(state)
     }
   }
+
+  redo() {
+    const state = this.undoRedoService.redo()
+    if (state) {
+      this.restoreCanvasState(state)
+    }
+  }
+
+  restoreCanvasState(state: ImageData) {
+    this.ctx.putImageData(state, 0, 0)
+  }
+
 }

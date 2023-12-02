@@ -3,6 +3,7 @@
       height="32" (click)="showMenu()" alt="Origami Menu Button"></button>
   <div id="origamiMenu" class="menu-content">
     <a (click)="undo()">Undo</a>
+    <a (click)="redo()">Redo</a>
     <a (click)="reset()">Reset</a>
     <a (click)="this.exportImportService.importImage(this.input, this.canvas.nativeElement)">Import an image</a>
     <a (click)="this.exportImportService.exportImage(this.canvas.nativeElement, 'png')">Export to PNG</a>

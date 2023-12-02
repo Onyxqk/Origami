@@ -5,36 +5,33 @@ import { Injectable } from '@angular/core'
 })
 export class UndoRedoService {
 
-  private undoStack: any[] = []
-  private redoStack: any[] = []
+  private stateStack: ImageData[] = []
+  private currentIndex: number = -1
 
-  saveCanvasState(canvas: HTMLCanvasElement): ImageData {
-    const ctx = canvas.getContext('2d')
-    return ctx.getImageData(0, 0, canvas.width, canvas.height)
+  saveState(state: ImageData) {
+    this.stateStack = this.stateStack.slice(0, this.currentIndex + 1)
+
+    this.stateStack.push(state)
+    this.currentIndex = this.stateStack.length - 1
   }
 
-  restoreCanvasState(canvas: HTMLCanvasElement, state: ImageData) {
-    const ctx = canvas.getContext('2d')
-    ctx.putImageData(state, 0, 0)
+  undo(): ImageData | null {
+    if (this.currentIndex > 0) {
+      this.currentIndex--
+      return this.getState()
+    }
+    return null
   }
 
-  pushUndoAction(action: any) {
-    this.undoStack.push(action)
+  redo(): ImageData | null {
+    if (this.currentIndex < this.stateStack.length - 1) {
+      this.currentIndex++
+      return this.getState()
+    }
+    return null
   }
 
-  popUndoAction(): any {
-    return this.undoStack.pop()
-  }
-
-  pushRedoAction(action: any) {
-    this.redoStack.push(action)
-  }
-
-  popRedoAction(): any {
-    return this.redoStack.pop()
-  }
-
-  clearRedoStack() {
-    this.redoStack = []
+  private getState(): ImageData {
+    return this.stateStack[this.currentIndex]
   }
 }
