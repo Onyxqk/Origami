@@ -39,6 +39,8 @@ describe('CanvasComponent', () => {
       stroke: jasmine.createSpy('stroke'),
       closePath: jasmine.createSpy('closePath'),
       clearRect: jasmine.createSpy('clearRect'),
+      getImageData: jasmine.createSpy('getImageData'),
+      putImageData: jasmine.createSpy('putImageData')
     } as unknown as CanvasRenderingContext2D
   })
 
@@ -257,17 +259,6 @@ describe('CanvasComponent', () => {
     expect(addTextSpy).toHaveBeenCalledOnceWith(event)
   })
 
-  it('should undo the last drawing action', () => {
-    const mockDrawingAction = { action: 'draw', data: new ImageData(50, 50) }
-    
-    spyOn(undoRedoService, 'popUndoAction').and.returnValue(mockDrawingAction)
-    spyOn(undoRedoService, 'pushRedoAction')
-
-    component.undo()
-
-    expect(undoRedoService.popUndoAction).toHaveBeenCalled()
-    expect(undoRedoService.pushRedoAction).toHaveBeenCalledWith(mockDrawingAction)
-  })
 
   it('should call erase for erase mode', () => {
     const eraseSpy = spyOn(component, 'erase')
@@ -291,5 +282,55 @@ describe('CanvasComponent', () => {
     component.reset()
     expect(component.reset)
     expect(component.ctx.clearRect).toHaveBeenCalled()
+  })
+
+  it('should undo if there is a state to undo', () => {
+    const mockState = { data: 'mockState' } as unknown as ImageData
+    spyOn(undoRedoService, 'undo').and.returnValue(mockState)
+    spyOn(component, 'restoreCanvasState')
+
+    component.undo()
+
+    expect(undoRedoService.undo).toHaveBeenCalled()
+    expect(component.restoreCanvasState).toHaveBeenCalledWith(mockState)
+  })
+
+  it('should not call restoreCanvasState when there is no state to undo', () => {
+    spyOn(undoRedoService, 'undo').and.returnValue(null)
+    spyOn(component, 'restoreCanvasState')
+
+    component.undo()
+
+    expect(undoRedoService.undo).toHaveBeenCalled()
+    expect(component.restoreCanvasState).not.toHaveBeenCalled()
+  })
+
+  it('should redo if there is a state to redo', () => {
+    const mockState = { data: 'mockState' } as unknown as ImageData
+    spyOn(undoRedoService, 'redo').and.returnValue(mockState)
+    spyOn(component, 'restoreCanvasState')
+
+    component.redo()
+
+    expect(undoRedoService.redo).toHaveBeenCalled()
+    expect(component.restoreCanvasState).toHaveBeenCalledWith(mockState)
+  })
+
+  it('should not call restoreCanvasState when there is no state to redo', () => {
+    spyOn(undoRedoService, 'redo').and.returnValue(null)
+    spyOn(component, 'restoreCanvasState')
+
+    component.redo()
+
+    expect(undoRedoService.redo).toHaveBeenCalled()
+    expect(component.restoreCanvasState).not.toHaveBeenCalled()
+  })
+
+  it('should restoreCanvasState with the provided state', () => {
+    const mockState = { data: 'mockState' } as unknown as ImageData
+
+    component.restoreCanvasState(mockState)
+
+    expect(component.ctx.putImageData).toHaveBeenCalled()
   })
 })
