@@ -7,6 +7,7 @@ import { ModeService } from '../services/mode.service'
 import { ShapeService } from '../services/shape.service'
 import { TextService } from '../services/text.service'
 import { UndoRedoService } from '../services/undo-redo.service'
+import { LineSmoothingService } from '../services/line-smoothing.service'
 @Component({
   selector: 'app-canvas',
   templateUrl: './canvas.component.html',
@@ -29,10 +30,11 @@ export class CanvasComponent {
   mediumLineWidth = 5
   thickLineWidth = 10
   input = document.createElement('input')
+  private currentPoints: { x: number; y: number }[] = []
 
   constructor(private colorService: ColorService, private brushService: BrushService,
     public exportImportService: ExportImportService, public shapeService: ShapeService,
-    private modeService: ModeService, public textService: TextService, private undoRedoService: UndoRedoService) {
+    private modeService: ModeService, public textService: TextService, private undoRedoService: UndoRedoService, private lineSmoothingService: LineSmoothingService) {
 
     this.colorSubscription = this.colorService.getColor().subscribe((color) => {
       this.ctx.strokeStyle = color
@@ -65,6 +67,19 @@ export class CanvasComponent {
     }
   }
 
+  drawSmoothedLine(points: { x: number; y: number }[]) {
+    const windowSize = 3
+    const smoothedPoints = this.lineSmoothingService.smoothLine(points, windowSize)
+
+    this.ctx.beginPath()
+    this.ctx.moveTo(smoothedPoints[0].x, smoothedPoints[0].y)
+    for (let i = 1; i < smoothedPoints.length; i++) {
+      this.ctx.lineTo(smoothedPoints[i].x, smoothedPoints[i].y)
+    }
+    this.ctx.stroke()
+    this.ctx.closePath()
+  }
+
   startDrawing(event: MouseEvent) {
     if (this.modeService.getMode() !== 'brush' && this.modeService.getMode() !== 'text' && this.modeService.getMode() !== 'erase') {
       this.drawShape(event, this.modeService.getMode())
@@ -77,8 +92,11 @@ export class CanvasComponent {
     }
     else {
       this.isDrawing = true
-      this.ctx.beginPath()
-      this.ctx.moveTo(event.clientX - this.canvas.nativeElement.getBoundingClientRect().left, event.clientY - this.canvas.nativeElement.getBoundingClientRect().top)
+      this.currentPoints = []
+      this.currentPoints.push({
+        x: event.clientX - this.canvas.nativeElement.getBoundingClientRect().left,
+        y: event.clientY - this.canvas.nativeElement.getBoundingClientRect().top,
+      })
     }
     const currentState = this.undoRedoService.saveCanvasState(this.canvas.nativeElement)
     this.undoRedoService.pushUndoAction({ action: 'draw', data: currentState })
@@ -97,10 +115,16 @@ export class CanvasComponent {
   }
 
   draw(event: MouseEvent) {
-    if (!this.isDrawing) return
+    if (!this.isDrawing) return;
 
-    this.ctx.lineTo(event.clientX - this.canvas.nativeElement.getBoundingClientRect().left, event.clientY - this.canvas.nativeElement.getBoundingClientRect().top)
-    this.ctx.stroke()
+    const x = event.clientX - this.canvas.nativeElement.getBoundingClientRect().left
+    const y = event.clientY - this.canvas.nativeElement.getBoundingClientRect().top
+
+    this.currentPoints.push({ x, y })
+
+    this.drawSmoothedLine(this.currentPoints)
+
+    this.currentPoints = [{ x, y }]
   }
 
   stopDrawing() {
