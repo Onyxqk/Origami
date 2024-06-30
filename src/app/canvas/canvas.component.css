@@ -24,6 +24,10 @@
   height: 3.875rem;
 }
 
+.origami-button img {
+  pointer-events: none;
+}
+
 .origami-button:hover, .origami-button:focus {
   background-color: rgba(57, 57, 57);
 }
