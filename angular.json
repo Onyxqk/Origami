@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Origami:build:production"
+              "buildTarget": "Origami:build:production"
             },
             "development": {
-              "browserTarget": "Origami:build:development"
+              "buildTarget": "Origami:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Origami:build"
+            "buildTarget": "Origami:build"
           }
         },
         "test": {
