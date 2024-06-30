@@ -1,15 +1,15 @@
 <div class="palette">
-    <input type="radio" class="red" name="color" aria-label="red" value="red" (change)="setColor('red')">
-    <input type="radio" class="green" name="color" aria-label="green" value="green"(change)="setColor('green')">
-    <input type="radio" class="blue" name="color" aria-label="blue" value="blue" (change)="setColor('blue')">
-    <input type="radio" class="yellow" name="color" aria-label="yellow" value="yellow" (change)="setColor('yellow')">
-    <input type="radio" class="orange" name="color" aria-label="orange" value="orange" (change)="setColor('orange')">
-    <input type="radio" class="purple" name="color" aria-label="purple" value="purple" (change)="setColor('purple')">
-    <input type="radio" class="pink" name="color" aria-label="pink" value="pink" (change)="setColor('pink')">
-    <input type="radio" class="brown" name="color" aria-label="brown" value="brown" (change)="setColor('brown')">
-    <input type="radio" class="gray" name="color" aria-label="gray" value="gray" (change)="setColor('gray')">
-    <input type="radio" class="black" name="color" aria-label="black" value="black" (change)="setColor('black')">
-    <input type="radio" class="white" name="color" aria-label="white" value="white" (change)="setColor('white')">
+    <button class="color-button red" aria-label="Red" (click)="setColor('red')"></button>
+    <button class="color-button green" aria-label="Green" (click)="setColor('green')"></button>
+    <button class="color-button blue" aria-label="Blue" (click)="setColor('blue')"></button>
+    <button class="color-button yellow" aria-label="Yellow" (click)="setColor('yellow')"></button>
+    <button class="color-button orange" aria-label="Orange" (click)="setColor('orange')"></button>
+    <button class="color-button purple" aria-label="Purple" (click)="setColor('purple')"></button>
+    <button class="color-button pink" aria-label="Pink" (click)="setColor('pink')"></button>
+    <button class="color-button brown" aria-label="Brown" (click)="setColor('brown')"></button>
+    <button class="color-button gray" aria-label="Gray" (click)="setColor('gray')"></button>
+    <button class="color-button black" aria-label="Black" (click)="setColor('black')"></button>
+    <button class="color-button white" aria-label="White" (click)="setColor('white')"></button>
     <input type="range" title="Adjust line width" class="line-width-range" [(ngModel)]="lineWidth" (input)="setLineWidth()" min="1" max="3"/>
     <button class="erase" (click)="this.modeService.setMode('erase')" title="Erase">⌫</button>
     <button class="addShape" (click)="this.modeService.setMode('triangle')">△</button>

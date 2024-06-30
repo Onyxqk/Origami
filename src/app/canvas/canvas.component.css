@@ -17,7 +17,6 @@
   border: none;
   padding: 1rem;
   margin-left: 1rem;
-  margin-right: 1rem;
   margin-top: -5.8rem;
   color: white;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -55,28 +54,4 @@
 
 .show {
   display: block;
-}
-
-@media screen and (min-width: 950px) {
-  .origami-button, .menu-content {
-    margin-left: 1rem;
-  }
-}
-
-@media screen and (min-width: 1300px) {
-  .origami-button, .menu-content {
-    margin-left: 9rem;
-  }
-}
-
-@media screen and (min-width: 1440px) {
-  .origami-button, .menu-content {
-    margin-left: 2rem;
-  }
-}
-
-@media screen and (min-width: 1920px) {
-  .origami-button, .menu-content {
-    margin-left: 20rem;
-  }
 }
