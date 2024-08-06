@@ -100,7 +100,7 @@
     cursor: pointer;
   }
 
-  .addShape, .addText, .erase {
+  .addShape, .addText, .brush, .erase {
     background-color: black;
     color: white;
     border: none;
